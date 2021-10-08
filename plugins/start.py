@@ -40,7 +40,7 @@ async def start_command(client: Client, message: Message):
                 ids = [int(int(argument[1]) / abs(client.db_channel.id))]
             except:
                 return
-        temp_msg = await message.reply("Bentar dulu"...")
+        temp_msg = await message.reply("Bentar dulu...")
         try:
             messages = await get_messages(client, ids)
         except:
@@ -50,10 +50,7 @@ async def start_command(client: Client, message: Message):
 
         for msg in messages:
 
-            if bool(CUSTOM_CAPTION) & bool(msg.document):
-                caption = CUSTOM_CAPTION.format(previouscaption = "" if not msg.caption else msg.caption.html, filename = msg.document.file_name)
-            else:
-                caption = "" if not msg.caption else msg.caption.html
+            caption = "" if not msg.caption else msg.caption.html
 
             if DISABLE_CHANNEL_BUTTON:
                 reply_markup = msg.reply_markup
@@ -94,14 +91,15 @@ async def start_command(client: Client, message: Message):
 
 @Bot.on_message(filters.command('start') & filters.private)
 async def not_joined(client: Client, message: Message):
-    text = "<b>You need to join in my Channel/Group to use me\n\nKindly Please join Channel</b>"
+    text = "<b>Sepertinya kamu belum join Channel/Group.\n\nSilahkan Bergabung terlebih dahulu</b>"
     message_text = message.text
     try:
         command, argument = message_text.split()
-        text = text + f" <b>and <a href='https://t.me/{client.username}?start={argument}'>try again</a></b>"
+        text = text + f" <b>Dan <a href='https://t.me/{client.username}?start={argument}'>Coba Lagi</a></b>"
     except ValueError:
         pass
     reply_markup = InlineKeyboardMarkup([[InlineKeyboardButton("Join Channel", url = client.invitelink)]])
+    reply_markup += InlineKeyboardMarkup([[InlineKeyboardButton("Coba Lagi", url = 'https://t.me/{client.username}?start={argument}')]])
     await message.reply(
         text = text,
         reply_markup = reply_markup,
