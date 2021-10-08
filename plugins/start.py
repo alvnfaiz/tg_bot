@@ -50,7 +50,7 @@ async def start_command(client: Client, message: Message):
 
         for msg in messages:
 
-            caption = ""
+            caption = "" if not msg.caption else msg.caption.html
 
             if DISABLE_CHANNEL_BUTTON:
                 reply_markup = msg.reply_markup
